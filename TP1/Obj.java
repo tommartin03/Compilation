@@ -1,4 +1,4 @@
-import java.util.List;
+
 class A{
 	static final int x;
 	int fact(int n){

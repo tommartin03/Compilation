@@ -1,0 +1,247 @@
+<h4 id="description-du-travail-à-réaliser">Description du travail à
+réaliser</h4>
+<p>Dans ce TP, vous devrez écrire du code java pour créer l’arbre de
+syntaxe abstraite de votre langage de programmation; et commencer à
+écrire des algorithmes qui parcourent ces arbres. En cours, vous avez vu
+ces manipulations pour l’exemple d’un langage minimal contenant des
+arbres binaires.</p>
+<p>Il s’agit donc de faire la même chose, mais avec les élémenst d’un
+langage de programmation.</p>
+<h4 id="dans-cette-aventure-vous-nêtes-pas-seul">Dans cette aventure,
+vous n’êtes pas seul…<br />
+</h4>
+<p>Sur Celene, une archive pour le TP2 vous est fournie, qui contient
+l’architecture de base du code attendu. Vous y trouverez l’équipement
+suivant :</p>
+<ul>
+<li><p>Un <em>programming language kit</em>, c’est-à-dire un fichier
+ANTLR (<code>plk.g4</code>) à compléter pour développer votre langage.
+Il contient le début d’une syntaxe pour les expressions (vous devez donc
+l’enrichir, et rajouter les instructions).</p></li>
+<li><p>Un package "ast" contenant la structure de base des classes java
+nécessaires à la constructions de l’arbre :</p>
+<ul>
+<li><p>Une classe abstraite pour les nœuds de l’arbre, dont devront
+hériter toutes les constructions.</p></li>
+<li><p>Une classe abstraite pour les expressions, (qui permettra par la
+suite d’écrire des algorithmes spécifiques aux arbres
+d’expressions.)</p></li>
+<li><p>Une classe concrète pour les deux types de nœuds déjà présents
+dans la grammaire fournie (entiers et opérations unaires dans
+<code>plk.g4</code>). Également une énumération pour les opérateurs
+disponibles.</p></li>
+<li><p>Une classe <code>AstBuild</code> permettant de récupérer l’arbre
+de syntaxe ANTLR pour créer l’AST avec les classes mentionnées plus
+haut. C’est une classe qui fait la "plomberie" entre le parseur généré
+et nos classes à nous; elle est donc cruciale car toute extension du
+langage devra être prise en compte ici (et implémentée ou non dans l’ast
+selon le type d’extension).</p>
+<p>Cette classe implémente le patron de conception visiteur conçu pour
+ANTLR.</p></li>
+<li><p>Une interface de visiteur pour les classes de notre AST. Les
+algorithmes sur nos arbres seront des classes implémentant cette
+interface. On pourra isoler une interface spécifique pour des visiteurs
+d’expressions uniquement, si nécessaire.</p></li>
+<li><p>Un exemple de visiteur concret conçu pour transformer l’ast en
+chaîne de caractères lisible <code>AstPrinter</code>; il est à
+compléter.</p></li>
+</ul></li>
+<li><p>Une classe <code>Main</code> où sont implémentées les
+fonctionnalités de base utilisant les méthodes des librairies ANTLR, de
+façon à générer à partir de caractères (lus sur l’entrée standard) un
+arbre de syntaxe (<code>ParseTree</code>) qui pourra recevoir notre
+visiteur <code>AstBuild</code> et créer l’objet correspondant à
+l’ast.</p>
+<p>Est également illustrée l’instanciation de l’AstPrinter pour pouvoir
+être testée rapidement.</p></li>
+<li><p>Un script bash<a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a> <code>build.sh</code> permettant de
+générer le parseur (les fichiers sont générés dans un package
+<code>parser</code> pour l’occasion) et de compiler les classes java
+(comme pour le TP précédent, il faut vérifier ou mettre à jour le chemin
+d’installation de la librairie).</p></li>
+<li><p>Un script <code>clean.sh</code> pour supprimer tous les fichiers
+générés.</p></li>
+<li><p>Remarque : n’hésitez pas à vous approprier ces scripts en les
+adaptant à vos besoins ou préférences de développement et de tests, en
+ajustant par exemple le <code>MakeFile</code> fourni au TP précédent
+pour plus de maniabilité.</p></li>
+</ul>
+<h4 id="premiers-tests">Premiers tests<br />
+</h4>
+<p>Dans un terminal Unix, placez vous dans le répertoire du TP2 (une
+fois extrait de l’archive fournie), et lancez <code>./build.sh</code>
+après vous être assuré d’avoir la configuration adéquate.</p>
+<p>Ensuite, lancez la commande <code>java Main</code>, qui devrait vous
+laisser ouverte l’inivite de commande.</p>
+<p>Tapez une expression à parser. Les seules expressions prises en
+charge dans le code fourni sont les entiers littéraux. Terminez votre
+saisie d’un entier par ’Entrée’ puis ’Ctrl+D’. L’entier devrait être
+recopié, car le programme a appelé le visiteur qui affiche l’ast.</p>
+<p>Dans la suite de vos tests, vous pourrez écrire les textes à parser
+dans des fichiers <code>test.plk</code> et utiliser le programme en
+redirigeant le fichier vers l’entrée standard en le lançant avec
+<code>java Main &lt; test.plk</code>.</p>
+<h1 id="première-mission">Première mission</h1>
+<p>Répétez le test ci-dessus avec une expression unaire au lieu d’un
+entier. Elles sont en effet déjà définies dans <code>plk</code>, avec
+plusieurs opérateurs possibles. Vous pouvez donc tester des expressions
+telles que <code>-2</code>. Mais l’afficheur ne prend pas encore en
+charge ce type de nœuds.</p>
+<ol>
+<li><p>Modifiez le visiteur <code>AstPrinter</code> pour pouvoir
+afficher les expressions unaires sous formes de chaînes de
+caractères.</p></li>
+<li><p>Modifiez l’<code>AstBuild</code> pour traiter le cas des
+expressions parenthésées. Si vous n’y parvenez pas ou ne voyez pas du
+tout comment faire (mais cherchez un tout petit peu quand même, je l’ai
+montré en cours), regardez le code de la démo du cours.</p></li>
+<li><p>Répétez les tests avec des expressions unaires comme
+<code>-(-(-(-12)))</code>.</p></li>
+<li><p>Intégrez la prise en charge de l’opérateur <code>not</code> et
+<code>abs</code></p></li>
+</ol>
+<h1 id="deuxième-mission-extension-du-langage">Deuxième mission :
+Extension du langage</h1>
+<p> <span id="sec:lang" label="sec:lang"></span></p>
+<h2 id="spécification-de-la-gramamire">Spécification de la
+gramamire</h2>
+<h4 id="conseil">Conseil</h4>
+<p>Dans cette partie du TP, vous devez ajouter des éléments à votre
+grammaire. Il est vivement recommandé de les ajouter petit à petit (par
+exemple, les constructions relatives au fonctions peuvent être laissées
+de côté dans un premier temps). Vous pouvez bien sûr récupérer ce que
+vous avez fait lors du TP précédent. Travaillez maintenant le fichier
+<code>plk.g4</code> pour ajouter :</p>
+<h4 id="lexèmes">Lexèmes</h4>
+<ul>
+<li><p>Les constantes booléennes</p></li>
+</ul>
+<h4 id="syntaxe">Syntaxe</h4>
+<ul>
+<li><p>Expressions :</p>
+<ul>
+<li><p>Constantes booléennes, du coup</p></li>
+<li><p>Variables</p></li>
+<li><p>Expressions binaires</p></li>
+<li><p>Appels de fonction : <code>f(x,y,…)</code></p></li>
+</ul></li>
+<li><p>Instructions :</p>
+<ul>
+<li><p>Déclaration de variable</p></li>
+<li><p>Affectation</p></li>
+<li><p>Liste d’instructions</p></li>
+<li><p>Boucle while</p></li>
+<li><p>Conditionnelle</p></li>
+<li><p>Retour de valeur (pour les fonctions)</p></li>
+</ul></li>
+</ul>
+<h2 id="création-des-classes-de-last">Création des classes de l’AST</h2>
+<p>Définissez des classes Java correspondant à votre langage :</p>
+<ul>
+<li><p>Une sous-classe abstraite de Nœud pour les instructions.</p></li>
+<li><p>Une classe concrète pour chaque catégorie syntaxique décrite en
+section <a href="#sec:lang" data-reference-type="ref"
+data-reference="sec:lang">[sec:lang]</a> (pour chaque nœud de l’AST
+générique).</p></li>
+</ul>
+<h2 id="rassembler-le-parseur-et-last">Rassembler le parseur et
+l’AST</h2>
+<p>Récupérez le code java de votre parseur (qui supporte l’option
+Visiteur). Si votre langage s’appelle <code>Langage</code>, vous devriez
+disposer entre autres des fichiers suivants :
+<code> plkLexer.java, plkParser.java, plk.tokens, plkVisitor.java, plkBaseVisitor.java</code>.</p>
+<h3 id="identification-du-code-généré-par-antlr">Identification du code
+généré par ANTLR</h3>
+<p>Parcourez le fichier <code>plkBaseVisitor</code> et
+<code>plkParser</code>. Remarquez que pour chaque catégorie syntaxique
+que vous avez inscrite dans votre fichier <code>.g4</code>, une classe
+statique a été créee dans le parseur, et que le visiteur a une méthode
+de visite pour chacune de ces classes. Ces classes sont
+<code>&lt;Règle&gt;Context</code>, et héritent de
+<code>ParserRuleContext</code>.</p>
+<p>Dans les classes statiques du <code>LangageParser</code>, vous avez
+des méthodes vous permettant de récupérer :</p>
+<ul>
+<li><p>Des nœuds terminaux (pour les entiers ou les variables), que vous
+pouvez traiter comme des <code>String</code> grâce à la méthode
+<code>getSymbol()</code> (cf doc Antlr Java sur Oracle)</p></li>
+<li><p>Des <code>Context</code>, ce sont les sous arbres, sur lesquels
+vous pourrez appeler vos visiteurs pour les diffuser (ils se
+comporteront comme une fonction récursive sur les arbres).</p></li>
+<li><p>Des listes de <code>Context</code> (quand il y a plusieurs
+sous-arbres), que vous devrez parcourir pour les traiter comme au point
+précédent. (Se référer si besoin à la collection <code>List</code> de
+Java.</p></li>
+</ul>
+<h3 id="codage">Codage</h3>
+<p>Modifiez la classe <code>AstBuild</code> pour créer l’AST adapté, en
+vous servant des points précédents et des exemples déjà codés.</p>
+<h1 id="algorithmes-sur-last">Algorithmes sur l’AST</h1>
+<h2 id="supporter-le-patron-visiteur">Supporter le patron visiteur</h2>
+<p>Pour que le nouvel AST soit compatible avec les algorithmes
+implémentés sous forme de visiteurs, il faut au préalable s’assurer des
+points suivants :</p>
+<ul>
+<li><p>Dans les nouvelles classes de votre AST, vous devez rajouter les
+méthodes <code>accept</code> impérativement pour que le code compile,
+car c’est imposé par la classe abstraite <code>Node</code>. Ces méthodes
+sont toutes identiques et servent juste à ce que le visiteur soit appelé
+correctement sur chacun des objets.</p></li>
+<li><p>L’iterface <code>Visiteur</code> pour l’AST doit comporter une
+déclaration de méthode <code>visit</code> pour chaque sous classe
+concrète de l’AST. Si vous en oubliez, des sous-arbres entiers du
+programme seront oubliés par les algorithmes.</p></li>
+</ul>
+<h2 id="premier-visiteur-afficher-le-code-source">Premier visiteur :
+afficher le code source</h2>
+<p>La classe <code>AstPrinter</code> ne compilera pas tant que vous
+n’aurez pas implémenté toutes les méthodes déclarées dans l’interface
+lors du point précédent.</p>
+<p>Complétez ce visiteur de façon à ce qu’il retourne une chaîne
+représentant l’AST de façon lisible.</p>
+<p>Faites en sorte que le code respecte une indentation naturelle des
+blocs dans les conditionnelles et les boucles.</p>
+<h1 id="extension-du-langage-deuxième-partie">Extension du langage —
+Deuxième partie</h1>
+<p>Dans cette section, on vous demande de rajouter des constructions au
+langage, sans rajouter pour autant de classes à l’AST.</p>
+<p>Pour les extentions demandées, vous avez le droit de modifier
+uniquement :</p>
+<ul>
+<li><p>Le fichier .g4, évidemment, pour permettre les nouvelles formes
+grammaticales.</p></li>
+<li><p>L’<code>AstBuild</code> qui devra implémenter ces constructions
+en utilisant les nœuds déjà définis dans l’AST.</p></li>
+</ul>
+<p>Vous devez rajouter la possibilité pour l’utilisateur d’écrire :</p>
+<ol>
+<li><p>Des boucles for (il vous faudra avoir déjà implémentées les
+boucles while)</p></li>
+<li><p>Des affectations/déclarations de la forme <code>int x = 1;</code>
+(il faut avoir les déclarations, et les affectations)</p></li>
+<li><p>Des incrémentations et décrémentations du type <code>x++;</code>
+(qui seront considérées uniquement comme des instructions, et non comme
+des expressions, pour plus de simplicité).</p></li>
+</ol>
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Si vous <a
+href="https://www.youtube.com/watch?v=UzIQOQGKeyI">préférez utiliser
+uniquement IntelliJ</a> : Dans la liste des fichiers (présente sur le
+panneau latéral), faire un clic droit sur le fichier .g4 de votre
+grammaire, puis ’Generate Antlr recognizer’, (ou Ctrl+Maj+G). Un
+répertoire <code>gen</code> est créé. (Pour votre programme, il pourra
+être nécessaire de renommer les packages).</p>
+<ul>
+<li><p>Il vous faudra importer les librairies Antlr4 pour Java. Pour
+cela, rendez-vous dans
+<code>Files &gt; Project Structure &gt; Libraries</code>.</p></li>
+<li><p>Puis avec Maven, recherchez une librairie Antlr4 (par
+exemple :antlr4-4.11), puis installez-la.</p></li>
+</ul>
+<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
+</ol>
+</aside>
