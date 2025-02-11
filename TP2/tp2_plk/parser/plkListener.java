@@ -8,6 +8,36 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface plkListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link plkParser#prog}.
+	 * @param ctx the parse tree
+	 */
+	void enterProg(plkParser.ProgContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plkParser#prog}.
+	 * @param ctx the parse tree
+	 */
+	void exitProg(plkParser.ProgContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plkParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void enterStat(plkParser.StatContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plkParser#stat}.
+	 * @param ctx the parse tree
+	 */
+	void exitStat(plkParser.StatContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plkParser#assignStat}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignStat(plkParser.AssignStatContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plkParser#assignStat}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignStat(plkParser.AssignStatContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code expUn}
 	 * labeled alternative in {@link plkParser#exp}.
 	 * @param ctx the parse tree
@@ -79,4 +109,14 @@ public interface plkListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpID(plkParser.ExpIDContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plkParser#varDecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarDecl(plkParser.VarDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plkParser#varDecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarDecl(plkParser.VarDeclContext ctx);
 }

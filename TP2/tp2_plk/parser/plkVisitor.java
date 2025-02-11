@@ -11,6 +11,24 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface plkVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link plkParser#prog}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProg(plkParser.ProgContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link plkParser#stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStat(plkParser.StatContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link plkParser#assignStat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignStat(plkParser.AssignStatContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code expUn}
 	 * labeled alternative in {@link plkParser#exp}.
 	 * @param ctx the parse tree
@@ -52,4 +70,10 @@ public interface plkVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpID(plkParser.ExpIDContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link plkParser#varDecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarDecl(plkParser.VarDeclContext ctx);
 }

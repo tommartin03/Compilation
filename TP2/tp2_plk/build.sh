@@ -1,7 +1,7 @@
 VERSION=4.13.2
 
 start="prog"
-path="/home/o22102488@campus.univ-orleans.fr/Documents/Compilation/TP2/tp2_plk/antlr-"$VERSION"-complete.jar"
+path="/mnt/c/Users/tomma/Desktop/M1/Compilation/TP2/tp2_plk/antlr-"$VERSION"-complete.jar"
 #Vérifier que la librairie antlr est bien présente
 if [ -f "$path" ]; then
 	echo "antlr4 OK"
