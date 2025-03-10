@@ -82,6 +82,6 @@ public class Translate extends ast.BaseVisitor<String> {
 		return code;
 	}
 	public String visit(ExpRead e){
-		return "";
+		return "li $v0, 5\nsyscall\n";
 	}
 }
